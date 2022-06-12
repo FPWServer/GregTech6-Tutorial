@@ -1,9 +1,29 @@
 <html>
-<meta charset="utf-8">
 <head>
+<meta charset="utf-8">
 <title>3.2 世界生成机制</title>
 </head>
 <body>
+<div style="height:540px;overflow:scroll;">
+<div style="width:150px;height:4500px;float:left;background:#C4C4C4;">
+<h1 style="font-size:18px;">目录</h1>
+<dl style="font-size:14px;">
+<dt><a>1 GregTech简介<br></a></dt>
+<dt><a>2 GregTech入门<br></a></dt>
+<dd><a href="../Chapter 2/GettingStart.html">2.1    从游戏开始到坩埚冶炼<br></a></dd>
+<dd><a>2.2    从坩埚到蒸汽初期<br></a></dd>
+<dd><a>2.3    蒸汽初期到蒸馏塔建构<br></a></dd>
+<dd><a>2.4    进入电力时代<br></a></dd>
+<dt><a>3 Mod机制<br></a>
+<dd><a>3.1 能源机制<br></a></dd>
+<dd><a href="../Chapter 3/WorldGeneration.html" style="font-weight:bold;">3.2 世界生成机制</a></dd>
+<dd><a>3.3 营养机制<br></a></dd>
+<dt><a>4 高阶运用<br></a></dt>
+<dt><a>5 游戏数据<br></a></dt>
+<dd><a href="../Chapter 5/BedrockVein.html">5.1基岩矿脉生成</a></dd>
+</dl>
+</div>
+<div>
 <h1>3.2 世界生成机制</h1>
 <p>众所周知，世界生成是Minecraft中的一项重要机制。自然，GT6作为有一个完整科技线的Mod,对世界的生成肯定会有一定干涉，并且，就GT而言，它的世界生成还比较复杂。</p>
 <p>具体来说，可以分为以下六部分:地表生成，表层生成，岩层生成，基岩生成，大型结构生成，以及其他维度的生成。</p>
@@ -15,14 +35,113 @@
 <p>首先介绍较为简单的海晶石尖塔。海晶石尖塔只生成在深海(Deep Ocean)生物群系，每个区块有1/4概率生成，有亮,暗两个变种，生成概率相等。</p>
 <p>海晶石尖塔生成模板较为固定，高度为21，中心高度y=30-39。形状为固定形状，中心3层为7x7的海晶石，中心向外2-4格为5x5,5-7格为3x3,8-10格为1x1。</p>
 <p>由于避免WorldGen Cascading,尖塔的中心坐标在所在区块的中心10x10。</p>
+<p>海晶石尖塔上任意一个位置的海晶石都有1/8的可能性转变为以海晶石为基础岩石的矿石。</p>
 <p style="text-align:center;font-size:12px;color:rgb(128,128,128);">一个完整的海晶石尖塔</p>
+<p>而更为常用常见的，则是地表的粘土，黑沙以及沼泽的泥炭，这些玩意都有一个特点，它们的生成规模都是48x48(即9个区块)，并且它们的生成模板都是一样的，如下图所示</p>
+<p style="text-align:center;font-size:12px;color:rgb(128,128,128);"><img src="../assets/Chapter 3/TurfExample.png" alt="Turf Example" width="576" height="384" style="margin:auto;"><br>这个看起来像圆的玩意(以泥炭为例)</p>
+<p>对它们来说，都有一个最高生成高度和一个最低生成高度，以及一个最大厚度，以及群落要求。并且它们都只会替换泥土，沙子，沙砾，以及粘土(显然粘土不会替代粘土- -)。而且，它们都不会替换长有植物(树木之类的)泥土。</p>
+<p>这些特征决定了它们的最大储量，对于黑沙和泥炭，这个值为63组半，对于粘土，这个值则为222组零32个。下面简单介绍一下这三种生成各自的要求</p>
+<ul>
+<li>黑沙:所在区块必须有河流生物群系，必须没有沙滩或沼泽，最大生成深度2，高度范围52-65，概率为1/64。</li>
+<li>泥炭:所在区块必须有沼泽群系，最大生成深度2，高度范围52-65,概率为1/32。<br></li>
+<li>粘土:所在区块中心不能为平原(Plain)或热带稀树草原(Savanna)<a style="text-decoration:line-through;">(就你不一样)</a>，最大生成深度7，高度范围56-80，主世界可能生成5种颜色的粘土，每种概率均为1/320。</li>
+</ul>
 <h2>3.2.3 岩层生成</h2>
 <p>//WIP</p>
 <h2>3.2.4 基岩生成</h2>
-<p>//WIP</p>
+基岩生成由两部分组成，一是基岩矿脉，二是流体泉。这俩玩意不能同时在一个区块生成(废话)
+<h3>3.2.4.1 基岩矿脉</h3>
+<p>基岩矿脉，顾名思义，就是基岩上的矿脉，这玩意是给GT6的<a href="https://www.mcmod.cn/item/77007.html">基岩钻</a>用的,可以拿来无限产矿</p>
+<p>对于基岩矿脉，其核心内容是在一个区块内完成的。具体来说，基岩矿石只生成在区块中心6x6的区域内。在这个区域内，每一格都有1/6的概率生成普通基岩矿石，以及1/3的概率生成小型基岩矿石。但一旦这个区块生成基岩矿脉，就<a style="color:rgb(255,0,0);font-weight:bold;text-decoration:underline;">至少会有一个普通基岩矿石生成。</a></p>
+<p>在基岩矿石上方，会形成层状的普通矿石，其范围可能超过本区块。如果这个基岩矿脉存在指示花，会尝试生成指示花。
+<p>具体基岩矿脉的生成概率及指示花以及生成维度记载于<a>5.1基岩矿脉数据</a>中。
+<p style="color:rgb(128,128,128);text-align:center;font-size:12px"><img src="../assets/Chapter 3/bedrock_vein.png" alt="bedrock vein" width="576" height="384"><br>一个完整的基岩矿脉</p>
+<p style="color:rgb(128,128,128);text-align:center;font-size:12px"><img src="../assets/Chapter 3/raw_bedrock_ore.png" alt="raw bedrock ore" width="576" height="384"><br>这个基岩矿脉的基岩矿石分布</p>
+<h3>3.2.4.2 流体泉</h3>
+<p>流体泉也是一种生成在基岩上的结构，它的主要组成是基岩上的流体泉方块和上面的流体库。</p>
+<p>流体泉方块的生成集中于区块中心10x10的范围，且越接近区块中心生成概率越高。最高为区块中心4x4区域，概率为14911/65536。平均每个生成流体的区块内生成12.79个流体泉方块。</p>
+<p style="color:rgb(128,128,128);text-align:center;font-size:12px"><img src="../assets/Chapter 3/FluidSpring2.png" alt="FluidSpring2" width="576" height="384"><br>从基岩层下方观察岩浆泉</p>
+<p>在基岩上方，会形成如图所示的流体库，存有281桶对应流体。</p>
+<p style="color:rgb(128,128,128);text-align:center;font-size:12px"><img src="../assets/Chapter 3/FluidSpring1.png" alt="FluidSpring1" width="576" height="384"><br>一个完整的流体泉结构</p>
+<p>对于流体泉，可以生成的流体种类相对较为多样，下表列出了所有流体泉的生成概率及生成维度。</p>
+<p>
+<table border="1" cellpadding="15" style="margin:auto;text-align:center;">
+<tr>
+<th>流体种类</th>
+<th>生成概率</th>
+<th>平均产出时间(tick/桶)</th>
+<th>生成维度</th>
+</tr>
+<tr>
+<td>超重油</td>
+<td>1/400</td>
+<td>6000</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>重油</td>
+<td>1/400</td>
+<td>6000</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>原油</td>
+<td>1/400</td>
+<td>6000</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>轻油</td>
+<td>1/400</td>
+<td>6000</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>天然气</td>
+<td>1/200</td>
+<td>3000</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>岩浆</td>
+<td>1/200</td>
+<td>1000</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>温泉水</td>
+<td>1/100</td>
+<td>500</td>
+<td>主世界</td>
+</tr>
+<tr>
+<td>岩浆</td>
+<td>1/100</td>
+<td>500</td>
+<td>下界</td>
+</tr>
+<tr>
+<td>天然气</td>
+<td>1/200</td>
+<td>1000</td>
+<td>暮色森林</td>
+</tr>
+<tr>
+<td>温泉水</td>
+<td>1/100</td>
+<td>250</td>
+<td>暮色森林</td>
+</tr>
+</table>
+</p>
+<p>注意，对于所有流体泉方块，其何时生成流体都是<span style="color:#FF0000;text-decoration:underline;font-weight:bold;">不确定的</span>,实际上每tick都有可能产生流体，概率为上表第三项的倒数。</p>
 <h2>3.2.5 大型结构生成</h2>
 <p>//WIP</p>
 <h2>3.2.6 其他维度生成</h2>
-<p style="text-align:center;"><a style="float:left;"><<<上一篇 </a><a href="../content.html">主页</a><a style="float:right;">下一篇>>><br></a></p>
+<p>//WIP</p>
+<p style="font-size:20px">credits:mordd,<a href="https://mcmod.cn">mcmod.cn</a>(3.2.5部分)</p>
+<p style="text-align:center;"><a style="float:left;" href="../Chapter 2/GettingStart.html"><<<上一篇 </a><a href="../content.html">主页</a><a style="float:right;" href="../Chapter 5/BedrockVein.html">下一篇>>><br></a></p>
+</div>
+</div>
 </body>
 </html>
